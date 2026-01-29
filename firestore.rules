@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ----------------------------------------------------------------------
+    // Articles Collection
+    // ----------------------------------------------------------------------
+    match /articles/{articleId} {
+      // Anyone authenticated can read an article
+      allow read: if request.auth != null;
+
+      // Anyone authenticated can create a new article
+      allow create: if request.auth != null &&
+                      request.resource.data.status == 'Born' &&
+                      request.resource.data.createdAt == request.time &&
+                      request.resource.data.updatedAt == request.time;
+
+      // Anyone authenticated can update an article
+      allow update: if request.auth != null &&
+                       request.resource.data.updatedAt == request.time &&
+                       // Status transition validation
+                       (
+                         (request.resource.data.status == 'Enriched' && resource.data.status == 'Born') ||
+                         (request.resource.data.status == 'Ready for Tender' && resource.data.status == 'Enriched') ||
+                         (request.resource.data.status == resource.data.status)
+                       );
+
+      // Deletion of articles is not allowed
+      allow delete: if false;
+    }
+  }
+}

@@ -2,6 +2,7 @@ import "@/css/satoshi.css";
 import "@/css/style.css";
 
 import { Sidebar } from "@/components/Layouts/sidebar";
+import { StakeholderCollaboration } from "@/components/Collaboration";
 
 import "flatpickr/dist/flatpickr.min.css";
 import "jsvectormap/dist/jsvectormap.css";
@@ -31,12 +32,15 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <div className="flex min-h-screen">
             <Sidebar />
 
-            <div className="w-full bg-gray-2 dark:bg-[#020d1a]">
+            <div className="flex-1 flex flex-col bg-gray-2 dark:bg-[#020d1a]">
               <Header />
 
-              <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
+              <main className="isolate mx-auto w-full max-w-screen-2xl overflow-y-auto p-4 md:p-6 2xl:p-10">
                 {children}
               </main>
+            </div>
+            <div className="w-96 bg-white dark:bg-gray-dark p-4 shadow-lg">
+                <StakeholderCollaboration />
             </div>
           </div>
         </Providers>
